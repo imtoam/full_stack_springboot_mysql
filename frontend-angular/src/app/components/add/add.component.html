@@ -1,0 +1,14 @@
+<h2>Add ToDo</h2>
+<hr/>
+<form [formGroup]="newTodoForm" (ngSubmit)="addTodo()">
+    <label for="task_new">Task: </label>
+    <input class="form-control" id="task_new" type="text" formControlName="task">
+    <br>
+    <label for="due_new">Due Date: </label>
+    <input class="form-control" id="due_new" type="date" formControlName="due">
+    <br>
+    <label for="status_new">Status: </label>
+    <input class="form-control" id="status_new" type="text" formControlName="status">
+    <br>
+    <button class="btn btn-primary" type="submit">Add Todo</button>
+  </form>

@@ -1,0 +1,22 @@
+<div *ngIf="error">{{error}}</div>
+<div *ngIf="success">{{success}}</div>
+    
+<div id="theList">
+  <h2>ToDo List</h2>
+  <hr/>
+  <div class="row">
+    <div class="col-1"><b>ID</b></div>
+    <div class="col-3"><b>TASK</b></div>
+    <div class="col-2"><b>DUE DATE</b></div>
+    <div class="col-1"><b>STATUS</b></div>
+  </div>
+  <div *ngFor="let item of todos">
+    <div class="row">
+      <div class="col-1">{{item.id}}</div>
+      <div class="col-3">{{item.task}}</div>
+      <div class="col-2">{{item.due}}</div>
+      <div class="col-1">{{item.status}}</div>
+      <div class="col-1"><a href="/todo/{{item.id}}">Details&gt;</a></div>
+    </div>
+  </div>
+</div>

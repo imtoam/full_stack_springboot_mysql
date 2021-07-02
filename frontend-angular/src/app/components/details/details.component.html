@@ -1,0 +1,21 @@
+<h2>ToDo Details</h2>
+<hr/>
+
+<form [formGroup]="todoForm" (ngSubmit)="updateTodo()">
+    <label for="id_update">ID: </label>
+    <input class="form-control" id="id_update" type="text" formControlName="id" readonly>
+    <br>
+    <label for="task_update">Task: </label>
+    <input class="form-control" id="task_update" type="text" formControlName="task">
+    <br>
+    <label for="due_update">Due Date: </label>
+    <input class="form-control" id="due_update" type="date" formControlName="due">
+    <br>
+    <label for="status_update">Status: </label>
+    <input class="form-control" id="status_update" type="text" formControlName="status">
+    <br>
+    <button class="btn btn-primary" type="submit">Update</button>
+</form>
+<div class="row my-3">
+    <div class="col-1"><button class="btn btn-primary px-3" (click)="deleteTodo()">Delete</button></div>
+</div>
