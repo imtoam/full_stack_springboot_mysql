@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jac.ipd24.edwin.model.Todo;
 import jac.ipd24.edwin.repository.TodoRepository;
 
-//@CrossOrigin(origins = "http://localhost:8899")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class TodoController {

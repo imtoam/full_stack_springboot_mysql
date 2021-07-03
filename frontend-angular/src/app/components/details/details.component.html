@@ -7,12 +7,31 @@
     <br>
     <label for="task_update">Task: </label>
     <input class="form-control" id="task_update" type="text" formControlName="task">
+    <div *ngIf="todoForm.value.task.invalid" class="alert">
+      <div *ngIf="todoForm.value.task.errors?.required">
+        Task is required.
+      </div>
+      <div *ngIf="todoForm.value.task.errors?.minlength">
+        Task must be at least 5 characters long.
+      </div>
+      <div *ngIf="todoForm.value.task.errors?.maxlength">
+        Task must be at most 200 characters long.
+      </div>
+    </div>
     <br>
     <label for="due_update">Due Date: </label>
     <input class="form-control" id="due_update" type="date" formControlName="due">
+    <div *ngIf="todoForm.value.due.invalid" class="alert">
+      <div *ngIf="todoForm.value.due.errors?.required">
+        Due Date is required.
+      </div>
+      <div *ngIf="todoForm.value.due.errors?.futureDate">
+        Due Date must be today or later dates.
+      </div>
+    </div>
     <br>
-    <label for="status_update">Status: </label>
-    <input class="form-control" id="status_update" type="text" formControlName="status">
+    <label for="status_update">Completed: </label>
+    <input class="form-control" id="status_update" type="checkbox" formControlName="isdone">
     <br>
     <button class="btn btn-primary" type="submit">Update</button>
 </form>

@@ -3,12 +3,32 @@
 <form [formGroup]="newTodoForm" (ngSubmit)="addTodo()">
     <label for="task_new">Task: </label>
     <input class="form-control" id="task_new" type="text" formControlName="task">
+    <div *ngIf="newTodoForm.value.task.invalid" class="alert">
+      <div *ngIf="newTodoForm.value.task.errors?.required">
+        Task is required.
+      </div>
+      <div *ngIf="newTodoForm.value.task.errors?.minlength">
+        Task must be at least 5 characters long.
+      </div>
+      <div *ngIf="newTodoForm.value.task.errors?.maxlength">
+        Task must be at most 200 characters long.
+      </div>
+    </div>
     <br>
     <label for="due_new">Due Date: </label>
     <input class="form-control" id="due_new" type="date" formControlName="due">
+    <div *ngIf="newTodoForm.value.due.invalid" class="alert">
+      <div *ngIf="newTodoForm.value.due.errors?.required">
+        Due Date is required.
+      </div>
+      <div *ngIf="newTodoForm.value.due.errors?.futureDate">
+        Due Date must be today or later.
+      </div>
+    </div>
     <br>
-    <label for="status_new">Status: </label>
-    <input class="form-control" id="status_new" type="text" formControlName="status">
+    <label for="status_new">Completed: </label>
+    <input class="form-control" id="status_new" type="checkbox" formControlName="isdone">
     <br>
     <button class="btn btn-primary" type="submit">Add Todo</button>
   </form>
+  

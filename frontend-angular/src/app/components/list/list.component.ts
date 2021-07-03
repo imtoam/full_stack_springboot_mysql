@@ -10,6 +10,7 @@ import {TodosService} from '../../services/todos.service';
 export class ListComponent implements OnInit {
   
   todos: Todo[] = [];
+  selectedTodo: Todo = new Todo();
   error = '';
   success = '';
 
@@ -30,6 +31,14 @@ export class ListComponent implements OnInit {
         console.error(error)
         this.error = error;
       });
+  }
+
+  onSelect(id: number){
+    for(let todo of this.todos){
+      if(todo.id == id){
+        this.selectedTodo = todo;
+      }
+    }
   }
 
 }

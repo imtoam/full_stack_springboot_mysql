@@ -1,9 +1,10 @@
 import { isNgTemplate } from '@angular/compiler';
-import { Component, IterableDiffers, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Todo } from '../../models/todo.model';
 import {TodosService} from '../../services/todos.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { futureDateValidator } from '../futureDateValidator';
 
 @Component({
   selector: 'app-details',
@@ -15,14 +16,15 @@ export class DetailsComponent implements OnInit {
   item: Todo = new Todo();
   error = '';
   success = '';
-  todoForm = new FormGroup({
-    id: new FormControl(''),
-    task: new FormControl(''),
-    due: new FormControl(''),
-    status: new FormControl('')
+  todoForm = this.fb.group({
+    id: [''],
+    task: ['', Validators.required, Validators.minLength(5), Validators.maxLength(200)],
+    due: ['', Validators.required, futureDateValidator],
+    isdone: [false],
   });
 
   constructor(private todoService: TodosService,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -40,7 +42,7 @@ export class DetailsComponent implements OnInit {
           id:  this.item.id,
           task: this.item.task,
           due: this.item.due,
-          status: this.item.status
+          isdone: this.item.isdone
         });
       },
       (error) => {                              //error() callback
@@ -72,7 +74,7 @@ export class DetailsComponent implements OnInit {
         this.item = response; 
         this.todoForm.value.task = response.task;
         this.todoForm.value.due = response.due;
-        this.todoForm.value.status = response.status;
+        this.todoForm.value.isdone = response.isdone;
         this.router.navigate(['/todos']);
       },
       (error) => {                              //error() callback

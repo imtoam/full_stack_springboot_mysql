@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Todo } from '../../models/todo.model';
 import {TodosService} from '../../services/todos.service';
+import { futureDateValidator } from '../futureDateValidator';
 
 @Component({
   selector: 'app-add',
@@ -11,14 +12,14 @@ import {TodosService} from '../../services/todos.service';
 })
 export class AddComponent implements OnInit {
 
-  newTodoForm = new FormGroup({
-    task: new FormControl(''),
-    due: new FormControl(''),
-    status: new FormControl('')
+  newTodoForm = this.fb.group({
+    task: ['', Validators.required, Validators.minLength(5), Validators.maxLength(200)],
+    due: ['', Validators.required, futureDateValidator],
+    isdone: [false],
   });
 
   constructor(private todoService: TodosService,
-    private route: ActivatedRoute,
+    private fb: FormBuilder,
     private router: Router) { }
 
   ngOnInit(): void {
