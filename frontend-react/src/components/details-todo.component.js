@@ -8,7 +8,7 @@ class ToDoDetails extends Component {
     super(props);
     this.onChangeTask = this.onChangeTask.bind(this);
     this.onChangeDue = this.onChangeDue.bind(this);
-    this.onChangeStatus = this.onChangeStatus.bind(this);
+    this.onChangeIsdone = this.onChangeIsdone.bind(this);
 
     this.getTodo = this.getTodo.bind(this);
     this.updateContent = this.updateContent.bind(this);
@@ -51,14 +51,14 @@ class ToDoDetails extends Component {
     });
   }
 
-  onChangeStatus(e) {
-    const status = e.target.value;
-
+  onChangeIsdone(e) {
+    const isdone = e.target.checked;
+    console.log(isdone);
       this.setState(function (prevState) {
         return {
           currentTodo: {
             ...prevState.currentTodo,
-            status: status,
+            isdone: isdone,
           },
         };
       });
@@ -83,7 +83,6 @@ class ToDoDetails extends Component {
       .updateTodo(this.state.currentTodo.id, this.state.currentTodo)
       .then((reponse) => {
         console.log(reponse);
-        
         this.setState({ message: "The todo was updated successfully!" });
       })
       .catch((e) => {
@@ -93,7 +92,7 @@ class ToDoDetails extends Component {
 
   removeTodo() {
     this.props
-      .deleteTodo(this.state.currentTodo.id) //this.props.match.params.id
+      .deleteTodo(this.state.currentTodo.id) 
       .then(() => {
         this.props.history.push("/todos");
       })
@@ -132,13 +131,13 @@ class ToDoDetails extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="status">Status</label>
+                  <label htmlFor="status">Done</label>
                   <input
-                    type="text"
+                    type="checkbox"
                     className="form-control"
                     id="status"
-                    value={this.state.currentTodo.status}
-                    onChange={this.onChangeStatus}
+                    value={this.state.currentTodo.isdone}
+                    onChange={this.onChangeIsdone}
                   />
                 </div> 
               </form>

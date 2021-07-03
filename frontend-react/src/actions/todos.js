@@ -3,6 +3,7 @@ import {
     RETRIEVE_TODOS,
     UPDATE_TODO,
     DELETE_TODO,
+    RETRIEVEBYID_TODO,
 } from "./types";
 import ToDoDataService from "../services/todos.service";
   
@@ -19,10 +20,24 @@ export const retrieveTodos = () => async (dispatch) => {
     }
 };
 
+export const retrieveByIdTodo = (id) => async (dispatch) => {
+  try {
+    const res = await ToDoDataService.get(id);
+
+    dispatch({
+      type: RETRIEVEBYID_TODO,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data); 
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const createTodo = (task, due, status) => async (dispatch) => {
     try {
-      const id = await ToDoDataService.create({ task, due, status });
-      const res = await ToDoDataService.get(id.data);
+      const res = await ToDoDataService.create({ task, due, status });
   
       dispatch({
         type: CREATE_TODO,

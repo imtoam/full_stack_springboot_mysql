@@ -3,6 +3,7 @@ import {
     RETRIEVE_TODOS,
     UPDATE_TODO,
     DELETE_TODO,
+    RETRIEVEBYID_TODO,
 } from "../actions/types";
 
 const initialState = [];
@@ -16,6 +17,9 @@ function todoReducer(todos = initialState, action) {
   
       case RETRIEVE_TODOS:
         return payload;
+
+      case RETRIEVEBYID_TODO:
+          return payload;
   
       case UPDATE_TODO:
         return todos.map((todo) => {

@@ -76,16 +76,16 @@ class ListTodos extends Component {
                 </div>
                 <div>
                   <label>
-                    <strong>Status:</strong>
+                    <strong>Done:</strong>
                   </label>{" "}
-                  {currentTodo.status}
+                  {currentTodo.isdone?"YES":"NO"}
                 </div>
   
                 <Link
                   to={"/todo/" + currentTodo.id}
-                  className="badge badge-warning"
+                  className="btn btn-warning"
                 >
-                  Edit
+                  Details
                 </Link>
               </div>
             ) : (

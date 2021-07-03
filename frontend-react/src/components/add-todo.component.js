@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createTodo } from "../actions/todos";
+import { createTodo, retrieveByIdTodo } from "../actions/todos";
 
 class AddToDo extends Component {
     constructor(props) {
       super(props);
       this.onChangeTask = this.onChangeTask.bind(this);
       this.onChangeDue = this.onChangeDue.bind(this);
-      this.onChangeStatus = this.onChangeStatus.bind(this);
+      this.onChangeIsdone = this.onChangeIsdone.bind(this);
       this.saveTodo = this.saveTodo.bind(this);
+      this.getTodo = this.getTodo.bind(this);
       this.newTodo = this.newTodo.bind(this);
   
       this.state = {
         id: null,
         task: "",
         due: null,
-        status: "pending",
+        isdone: false,
         submitted: false,
       };
     }
@@ -32,28 +33,45 @@ class AddToDo extends Component {
         });
     }
 
-    onChangeStatus(e) {
+    onChangeIsdone(e) {
       this.setState({
-        status: e.target.value,
+        isdone: e.target.checked,
       });
     }
-  
+
     saveTodo() {
-      const { task, due, status } = this.state;
+      const { task, due, isdone } = this.state;
   
       this.props
-        .createTodo(task, due, status)
+        .createTodo(task, due, isdone)
         .then((data) => {
+          console.log(data);
           this.setState({
             id: data.id,
             task: data.task,
             due: data.due,
-            status: data.status,
+            isdone: data.isdone,
             submitted: true,
           });
-          console.log(data);
+          //this.props.history.push("/todos");
         })
         .catch((e) => {
+          console.log(e);
+        });
+    }
+
+    getTodo(_id) {
+      console.log(_id);
+      this.props.retrieveByIdTodo(_id)
+        .then((data)=>{
+          this.setState({
+            id: data.id,
+            task: data.task,
+            due: data.due,
+            isdone: data.isdone,
+            submitted: false,
+          });
+        }).catch((e) => {
           console.log(e);
         });
     }
@@ -63,7 +81,7 @@ class AddToDo extends Component {
         id: null,
         task: "",
         due: null,
-        status: "pending",
+        isdone: false,
         submitted: false,
       });
     }
@@ -75,7 +93,7 @@ class AddToDo extends Component {
                 <div>
                   <h4>You submitted successfully!</h4>
                   <button className="btn btn-success" onClick={this.newTodo}>
-                    Add
+                    Add Again
                   </button>
                 </div>
               ) : (
@@ -107,15 +125,15 @@ class AddToDo extends Component {
                   </div>
       
                   <div className="form-group">
-                    <label htmlFor="status">Status</label>
+                    <label htmlFor="status">Done</label>
                     <input
-                      type="text"
+                      type="checkbox"
                       className="form-control"
                       id="status"
                       required
-                      value={this.state.status}
-                      onChange={this.onChangeStatus}
-                      name="status"
+                      value={this.state.isdone}
+                      onChange={this.onChangeIsdone}
+                      name="isdone"
                     />
                   </div>
 
@@ -129,4 +147,4 @@ class AddToDo extends Component {
     }
   }
   
-  export default connect(null, { createTodo })(AddToDo);
+  export default connect(null, { createTodo, retrieveByIdTodo })(AddToDo);
