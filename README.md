@@ -8,7 +8,9 @@ MySQL is used for this solution. To import database, please execute `./todo-mysq
 
 Add `@CrossOrigin(origins = "http://localhost:4200") ` in spring boot to accept requests. `Port 4200` is the default port of Angular. And, the port of react application is customized as 4200. 
 
-Add `"Access-Control-Allow-Origin": "*"` into the hearders of axios.
+Add `"Access-Control-Allow-Origin": "http://localhost:4200"` into the hearders of axios.
+
+* `http://localhost:4200` can be replaced with `*` for all origins 
 
 ## Others ?
 
