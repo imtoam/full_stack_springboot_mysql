@@ -32,8 +32,8 @@ export class AddComponent implements OnInit {
     var input = this.newTodoForm.value;
     this.todoService.add(input).subscribe(
       (response) => {                           //next() callback
-        var id = response; 
-        console.log('ID '+ id + ' is added');
+        var todo = response; 
+        console.log('ID '+ todo.id + ' is added');
         this.router.navigate(['/todos']);
       },
       (error) => {                              //error() callback

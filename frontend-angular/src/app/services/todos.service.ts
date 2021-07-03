@@ -68,9 +68,9 @@ export class TodosService {
       );
   }
 
-  add(todo: Todo):Observable<string>
+  add(todo: Todo):Observable<Todo>
   {
-    return this.http.post<string>(this.urlBase+`/api/add`, todo)
+    return this.http.post<Todo>(this.urlBase+`/api/add`, todo)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);
