@@ -18,10 +18,13 @@ export class DetailsComponent implements OnInit {
   success = '';
   todoForm = this.fb.group({
     id: [''],
-    task: ['', Validators.required, Validators.minLength(5), Validators.maxLength(200)],
-    due: ['', Validators.required, futureDateValidator],
+    task: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
+    due: ['', [Validators.required]],
     isdone: [false],
   });
+
+  get task() {return this.todoForm.get('task');}
+  get due() {return this.todoForm.get('due');}
 
   constructor(private todoService: TodosService,
     private fb: FormBuilder,

@@ -2,7 +2,7 @@
 <div *ngIf="success">{{success}}</div>
     
 <div id="theList" [ngClass]="['row']">
-  <div [ngClass]="['col-md-6']">
+  <div [ngClass]="['col-md-6 mb-5']">
     <h4>Todos List</h4>
     <div [ngClass]="['list-group']" *ngFor="let item of todos">
       <a [ngClass]="['list-group-item']" (click)="onSelect(item.id)">{{item.task}}</a>
@@ -16,7 +16,7 @@
     <div><p><b>ID</b>: {{selectedTodo.id}}</p></div>
     <div><p><b>TASK</b>: {{selectedTodo.task}}</p></div>
     <div><p><b>DUE DATE</b>: {{selectedTodo.due}}</p></div>
-    <div><p><b>COMPLETED</b>: {{selectedTodo.isdone}}</p></div>
+    <div><p><b>DONE</b>: {{selectedTodo.isdone?"YES":"NO"}}</p></div>
     <div><a [ngClass]="['btn btn-warning']" href="/todo/{{selectedTodo.id}}">Details</a></div>
   </div>
 </div>

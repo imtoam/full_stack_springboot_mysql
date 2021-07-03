@@ -7,33 +7,30 @@
     <br>
     <label for="task_update">Task: </label>
     <input class="form-control" id="task_update" type="text" formControlName="task">
-    <div *ngIf="todoForm.value.task.invalid" class="alert">
-      <div *ngIf="todoForm.value.task.errors?.required">
+    <div *ngIf="task?.invalid" class="alert alert-danger">
+      <div *ngIf="task?.errors?.required">
         Task is required.
       </div>
-      <div *ngIf="todoForm.value.task.errors?.minlength">
+      <div *ngIf="task?.errors?.minlength">
         Task must be at least 5 characters long.
       </div>
-      <div *ngIf="todoForm.value.task.errors?.maxlength">
+      <div *ngIf="task?.errors?.maxlength">
         Task must be at most 200 characters long.
       </div>
     </div>
     <br>
     <label for="due_update">Due Date: </label>
     <input class="form-control" id="due_update" type="date" formControlName="due">
-    <div *ngIf="todoForm.value.due.invalid" class="alert">
-      <div *ngIf="todoForm.value.due.errors?.required">
+    <div *ngIf="due?.invalid" class="alert alert-danger">
+      <div *ngIf="due?.errors?.required">
         Due Date is required.
-      </div>
-      <div *ngIf="todoForm.value.due.errors?.futureDate">
-        Due Date must be today or later dates.
       </div>
     </div>
     <br>
-    <label for="status_update">Completed: </label>
-    <input class="form-control" id="status_update" type="checkbox" formControlName="isdone">
+    <label  class="form-check-label" for="status_update">Done: </label>
+    <input class="form-check-input-reverse ms-2" id="status_update" type="checkbox" formControlName="isdone">      
     <br>
-    <button class="btn btn-primary" type="submit">Update</button>
+    <button class="btn btn-primary mt-3" type="submit">Update</button>
 </form>
 <div class="row my-3">
     <div class="col-1"><button class="btn btn-primary px-3" (click)="deleteTodo()">Delete</button></div>

@@ -13,10 +13,13 @@ import { futureDateValidator } from '../futureDateValidator';
 export class AddComponent implements OnInit {
 
   newTodoForm = this.fb.group({
-    task: ['', Validators.required, Validators.minLength(5), Validators.maxLength(200)],
-    due: ['', Validators.required, futureDateValidator],
+    task: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
+    due: ['', [Validators.required, futureDateValidator()]],
     isdone: [false],
   });
+
+  get task() {return this.newTodoForm.get('task');}
+  get due() {return this.newTodoForm.get('due');}
 
   constructor(private todoService: TodosService,
     private fb: FormBuilder,
