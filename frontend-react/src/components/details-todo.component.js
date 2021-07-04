@@ -17,6 +17,8 @@ class ToDoDetails extends Component {
     this.state = {
       currentTodo: null,
       message: "",
+      task_err: '',
+      due_err: '',
     };
   }
 
@@ -25,13 +27,25 @@ class ToDoDetails extends Component {
   }
 
   onChangeTask(e) {
-    const task = e.target.value;
+    if(e.target.value==null){
+      this.setState({task_err: 'Task must not be empty', });
+    }else{
+      var _value = e.target.value;
+      //console.log(_value);
+      if(_value.length<5){
+        this.setState({task_err: 'Task must be at least 5 characters', });
+      }else if(_value.length>200){
+        this.setState({task_err: 'Task must be at most 200 characters', });
+      }else{
+        this.setState({task_err: '' });
+      }
+    } 
 
     this.setState(function (prevState) {
       return {
         currentTodo: {
           ...prevState.currentTodo,
-          task: task,
+          task: e.target.value,
         },
       };
     });
@@ -39,13 +53,33 @@ class ToDoDetails extends Component {
   }
 
   onChangeDue(e) {
-    const due = e.target.value;
+    if(e.target.value==null){
+      this.setState({due_err: 'Due Date must not be empty', });
+    }else{
+      var today = new Date();
+      today.setHours(0);
+      today.setMinutes(0);
+      today.setSeconds(0);
+      //console.log(today.valueOf());
+      var due = new Date(e.target.value);
+      //console.log(due);
+      due.setHours(due.getHours()+(due.getTimezoneOffset()/60));
+      //console.log(due.valueOf());
+      
+      if(due.valueOf() < today.valueOf()){
+        //console.log('due date is ealier than expectation');
+        this.setState({due_err: 'Due Date must be today or later', });//, ()=>console.log(this.state.due_err?this.state.due_err:'no due err'));
+      }else{
+        //console.log('due date is correct?');
+        this.setState({due_err: '', });//, ()=>console.log(this.state.due_err?this.state.due_err:'no due err'));
+      }
+    }
 
     this.setState(function (prevState) {
       return {
         currentTodo: {
           ...prevState.currentTodo,
-          due: due,
+          due: e.target.value,
         },
       };
     });
@@ -78,16 +112,20 @@ class ToDoDetails extends Component {
   }
 
   updateContent() {
-    console.log(this.state.currentTodo);
-    this.props
-      .updateTodo(this.state.currentTodo.id, this.state.currentTodo)
-      .then((reponse) => {
-        console.log(reponse);
-        this.setState({ message: "The todo was updated successfully!" });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    console.log(this.state.task_err);
+    console.log(this.state.due_err);
+    if(!this.state.task_err && !this.state.due_err) {
+      console.log(this.state.currentTodo);
+      this.props
+        .updateTodo(this.state.currentTodo.id, this.state.currentTodo)
+        .then((reponse) => {
+          console.log(reponse);
+          this.setState({ message: "The todo was updated successfully!" });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }
 
   removeTodo() {
@@ -102,16 +140,22 @@ class ToDoDetails extends Component {
   }
 
   render() {
-    console.log("Rendering...");
+    var task_err_info = this.state.task_err?
+        (<div><p className="err_info">{this.state.task_err}</p></div>)
+        :(<div></div>);
+    var due_err_info = this.state.due_err?
+        (<div><p className="err_info">{this.state.due_err}</p></div>)
+        :(<div></div>);
     return (
         <div>
+          <h2>ToDo Details</h2>
+          <hr/>
           {this.state.currentTodo ? (
-            <div className="edit-form">
-              <h4>Todo</h4>
-              <p>{this.state.currentTodo.id}</p>
+            <div className="edit-form form-label">
+              <p><b>ID</b>: {this.state.currentTodo.id}</p>
               <form>
                 <div className="form-group">
-                  <label htmlFor="task">Task</label>
+                  <label htmlFor="task"><b>Task</b></label>
                   <input
                     type="text"
                     className="form-control"
@@ -120,8 +164,9 @@ class ToDoDetails extends Component {
                     onChange={this.onChangeTask}
                   />
                 </div>
+                {task_err_info}
                 <div className="form-group">
-                  <label htmlFor="due">Due</label>
+                  <label htmlFor="due"><b>Due</b></label>
                   <input
                     type="date"
                     className="form-control"
@@ -130,11 +175,12 @@ class ToDoDetails extends Component {
                     onChange={this.onChangeDue}
                   />
                 </div>
+                {due_err_info}
                 <div className="form-group">
-                  <label htmlFor="status">Done</label>
+                  <label class="form-check-label" htmlFor="status"><b>Done</b></label>
                   <input
                     type="checkbox"
-                    className="form-control"
+                    className="form-check-input-reverse ml-2"
                     id="status"
                     value={this.state.currentTodo.isdone}
                     onChange={this.onChangeIsdone}
@@ -143,7 +189,7 @@ class ToDoDetails extends Component {
               </form>
 
               <button
-                className="badge badge-danger mr-2"
+                className="btn btn-primary mr-2"
                 onClick={this.removeTodo}
               >
                 Delete
@@ -151,7 +197,7 @@ class ToDoDetails extends Component {
   
               <button
                 type="submit"
-                className="badge badge-success"
+                className="btn btn-primary"
                 onClick={this.updateContent}
               >
                 Update

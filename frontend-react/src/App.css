@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+.form-label{
+  text-align: left;
+}
+
+.err_info{
+  color: red;
+  font-size: calc(10px + 1vmin);
+}

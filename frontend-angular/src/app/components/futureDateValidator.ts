@@ -11,7 +11,7 @@ export function futureDateValidator(): ValidatorFn {
       //console.log(due);
       due.setHours(due.getHours()+(due.getTimezoneOffset()/60));
       //console.log(due);
-      if(due.getDate() < today.getDate())
+      if(due.valueOf() < today.valueOf())
         return  {futureDate: {value: control.value}};
       else
         return null;
