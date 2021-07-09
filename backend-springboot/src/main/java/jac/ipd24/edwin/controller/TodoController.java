@@ -24,12 +24,12 @@ import jac.ipd24.edwin.repository.TodoRepository;
 
 @CrossOrigin(origins = "*", maxAge = 3600) // angular default port and react customized port
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/todos")
 public class TodoController {
     @Autowired
     TodoRepository todoRepository;
 
-    @GetMapping("/todos")
+    @GetMapping("/all")
     public ResponseEntity<List<Todo>> getAllTodos(@RequestParam(required = false) String status) {
         try {
             List<Todo> todos = new ArrayList<Todo>();
@@ -50,7 +50,7 @@ public class TodoController {
         }
     }
 
-    @GetMapping("/todo/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Todo> getTodoById(@PathVariable("id") long id) {
         Optional<Todo> todoData = todoRepository.findById(id);
 
@@ -74,7 +74,7 @@ public class TodoController {
         }
     }
 
-    @PutMapping("/todo/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('EDIT') or hasRole('ADMIN')")
     public ResponseEntity<Todo> updateTodo(@PathVariable("id") long id, @RequestBody Todo todo) {
         Optional<Todo> todoData = todoRepository.findById(id);
@@ -90,7 +90,7 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping("/todo/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('EDIT') or hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteTodo(@PathVariable("id") long id) {
         try {
