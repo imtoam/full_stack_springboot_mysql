@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import jac.ipd24.edwin.model.Todo;
 import jac.ipd24.edwin.repository.TodoRepository;
 
-@CrossOrigin(origins = "*") // angular default port and react customized port
+@CrossOrigin(origins = "*", maxAge = 3600) // angular default port and react customized port
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/todos")
 public class TodoController {
     @Autowired
     TodoRepository todoRepository;
 
-    @GetMapping("/todos")
+    @GetMapping("/all")
     public ResponseEntity<List<Todo>> getAllTodos(@RequestParam(required = false) String status) {
         try {
             List<Todo> todos = new ArrayList<Todo>();
@@ -49,7 +50,7 @@ public class TodoController {
         }
     }
 
-    @GetMapping("/todo/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Todo> getTodoById(@PathVariable("id") long id) {
         Optional<Todo> todoData = todoRepository.findById(id);
 
@@ -61,6 +62,7 @@ public class TodoController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('CREATE') or hasRole('ADMIN')")
     public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
         try {
             Todo _todo = todoRepository
@@ -72,7 +74,8 @@ public class TodoController {
         }
     }
 
-    @PutMapping("/todo/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('EDIT') or hasRole('ADMIN')")
     public ResponseEntity<Todo> updateTodo(@PathVariable("id") long id, @RequestBody Todo todo) {
         Optional<Todo> todoData = todoRepository.findById(id);
 
@@ -87,7 +90,8 @@ public class TodoController {
         }
     }
 
-    @DeleteMapping("/todo/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('EDIT') or hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteTodo(@PathVariable("id") long id) {
         try {
             todoRepository.deleteById(id);
@@ -96,6 +100,5 @@ public class TodoController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }
