@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError} from 'rxjs/operators';
 import { Todo } from '../models/todo.model';
+
+const httpHeaderOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodosService {
-  urlBase: string = "http://localhost:8080";
+  todoUrlBase: string = "http://localhost:8080/api/todos";
   constructor(private http: HttpClient) { }
   
   getAll():Observable<Todo[]>
   {
-    return this.http.get<Todo[]>(this.urlBase+`/api/todos`)
+    return this.http.get<Todo[]>(this.todoUrlBase+`/all`, httpHeaderOptions)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);
@@ -24,8 +28,9 @@ export class TodosService {
 
   getByStatus(status: string):Observable<Todo[]>
   {
-    let param = new HttpParams().set('status',status);
-    return this.http.get<Todo[]>(this.urlBase+`/api/todos`,{params:param})
+    let httpParamOptions = new HttpParams().set('status',status);
+    const httpOptions = {params: httpParamOptions, headers: httpHeaderOptions.headers};
+    return this.http.get<Todo[]>(this.todoUrlBase, httpOptions)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);
@@ -36,7 +41,7 @@ export class TodosService {
 
   get(id: any):Observable<Todo>
   {
-    return this.http.get<Todo>(this.urlBase+`/api/todo/`+id)
+    return this.http.get<Todo>(this.todoUrlBase+`/`+id, httpHeaderOptions)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);
@@ -48,7 +53,7 @@ export class TodosService {
   delete(id: any):Observable<string>
   {
     //console.log("http handling delete...")
-    return this.http.delete<string>(this.urlBase+`/api/todo/`+id)
+    return this.http.delete<string>(this.todoUrlBase+`/`+id, httpHeaderOptions)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);
@@ -59,7 +64,7 @@ export class TodosService {
 
   update(todo: Todo):Observable<Todo>
   {
-    return this.http.put<Todo>(this.urlBase+`/api/todo/`+todo.id, todo)
+    return this.http.put<Todo>(this.todoUrlBase+`/`+todo.id, todo, httpHeaderOptions)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);
@@ -70,7 +75,7 @@ export class TodosService {
 
   add(todo: Todo):Observable<Todo>
   {
-    return this.http.post<Todo>(this.urlBase+`/api/add`, todo)
+    return this.http.post<Todo>(this.todoUrlBase+`/add`, todo, httpHeaderOptions)
       .pipe( catchError( (err)=>{
         console.log('error caught in service')
         console.error(err);

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Todo } from '../../models/todo.model';
 import {TodosService} from '../../services/todos.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { futureDateValidator } from '../futureDateValidator';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-details',
@@ -16,6 +16,7 @@ export class DetailsComponent implements OnInit {
   item: Todo = new Todo();
   error = '';
   success = '';
+  authEdit: boolean = false;
   todoForm = this.fb.group({
     id: [''],
     task: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
@@ -29,11 +30,13 @@ export class DetailsComponent implements OnInit {
   constructor(private todoService: TodosService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router, 
+    private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     //console.log(this.route.snapshot.params.id);
     this.getTodo(this.route.snapshot.params.id);
+    this.authEdit = this.tokenStorageService.getUser().roles.includes('ROLE_EDIT');
   }
   getTodo(id: any) : void 
   {
@@ -57,32 +60,42 @@ export class DetailsComponent implements OnInit {
   deleteTodo():void
   {
     //console.log("deleting...")
-    this.todoService.delete(this.item.id).subscribe(
-      (response) => {                           //next() callback
-        this.success = response; 
-        console.log(this.success);
-        this.router.navigate(['/todos']);
-;      },
-      (error) => {                              //error() callback
-        console.error(error)
-        this.error = error;
-      });
+    if(this.authEdit){
+      this.todoService.delete(this.item.id).subscribe(
+        (response) => {                           //next() callback
+          this.success = response; 
+          console.log(this.success);
+          this.router.navigate(['/todos']);
+  ;      },
+        (error) => {                              //error() callback
+          console.error(error)
+          this.error = error;
+        });
+    }else{
+      this.error = "You are not authorized to perform this operation.";
+    }
+    
   }
 
   updateTodo():void
   {
-    console.log(this.todoForm.value);
-    this.todoService.update(this.todoForm.value).subscribe(
-      (response) => {                           //next() callback
-        this.item = response; 
-        this.todoForm.value.task = response.task;
-        this.todoForm.value.due = response.due;
-        this.todoForm.value.isdone = response.isdone;
-        this.router.navigate(['/todos']);
-      },
-      (error) => {                              //error() callback
-        console.error(error)
-        this.error = error;
-      });
+    if(this.authEdit){
+      console.log(this.todoForm.value);
+      this.todoService.update(this.todoForm.value).subscribe(
+        (response) => {                           //next() callback
+          this.item = response; 
+          this.todoForm.value.task = response.task;
+          this.todoForm.value.due = response.due;
+          this.todoForm.value.isdone = response.isdone;
+          this.router.navigate(['/todos']);
+        },
+        (error) => {                              //error() callback
+          console.error(error)
+          this.error = error;
+        });
+    }else{
+      this.error = "You are not authorized to perform this operation.";
+    }
+
   }
 }
