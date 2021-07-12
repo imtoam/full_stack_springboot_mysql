@@ -1,7 +1,12 @@
 <h2>ToDo Details</h2>
 <hr/>
 
-<form [formGroup]="todoForm" (ngSubmit)="updateTodo()">
+<div *ngIf="authEdit; then thenBlock else elseBlock"></div>
+
+<ng-template #thenBlock>
+  <div *ngIf="error">{{error}}</div>
+  <div *ngIf="success">{{success}}</div>
+  <form [formGroup]="todoForm" (ngSubmit)="updateTodo()">
     <label for="id_update">ID: </label>
     <input class="form-control" id="id_update" type="text" formControlName="id" readonly>
     <br>
@@ -31,7 +36,12 @@
     <input class="form-check-input-reverse ms-2" id="status_update" type="checkbox" formControlName="isdone">      
     <br>
     <button class="btn btn-primary mt-3" type="submit">Update</button>
-</form>
-<div class="row my-3">
-    <div class="col-1"><button class="btn btn-primary px-3" (click)="deleteTodo()">Delete</button></div>
-</div>
+  </form>
+  <div class="row my-3">
+      <div class="col-1"><button class="btn btn-primary px-3" (click)="deleteTodo()">Delete</button></div>
+  </div>
+</ng-template>
+
+<ng-template #elseBlock>
+  <h5>You are not authorized to perform this operation.</h5>
+</ng-template>

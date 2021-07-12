@@ -1,6 +1,12 @@
 <h2>Add ToDo</h2>
 <hr/>
-<form [formGroup]="newTodoForm" (ngSubmit)="addTodo()">
+
+<div *ngIf="authEdit; then thenBlock else elseBlock"></div>
+
+<ng-template #thenBlock>
+  <div *ngIf="error">{{error}}</div>
+  <div *ngIf="success">{{success}}</div>
+  <form [formGroup]="newTodoForm" (ngSubmit)="addTodo()">
     <label for="task_new">Task: </label>
     <input class="form-control" id="task_new" type="text" formControlName="task">
     <div *ngIf="task?.invalid" class="alert alert-danger">
@@ -32,4 +38,8 @@
     <br>
     <button class="btn btn-primary mt-3" type="submit">Add Todo</button>
   </form>
-  
+</ng-template>
+
+<ng-template #elseBlock>
+  <h5>You are not authorized to perform this operation.</h5>
+</ng-template>

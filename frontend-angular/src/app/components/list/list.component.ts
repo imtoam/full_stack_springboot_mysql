@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../../models/todo.model';
 import {TodosService} from '../../services/todos.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 @Component({
   selector: 'app-list',
@@ -13,21 +14,24 @@ export class ListComponent implements OnInit {
   selectedTodo: Todo = new Todo();
   error = '';
   success = '';
+  authEdit: boolean = false;
 
-  constructor(private todoService: TodosService) { }
+  constructor(private todoService: TodosService, 
+              private tokenStorageService: TokenStorageService) { }
 
   ngOnInit(): void {
     this.getTodos();
+    this.authEdit = this.tokenStorageService.getUser().roles.includes('ROLE_EDIT');
   }
 
   getTodos() : void 
   {
     this.todoService.getAll().subscribe(
-      (response) => {                           //next() callback
+      (response) => {                           
         console.log(response)
         this.todos = response; 
       },
-      (error) => {                              //error() callback
+      (error) => {                              
         console.error(error)
         this.error = error;
       });

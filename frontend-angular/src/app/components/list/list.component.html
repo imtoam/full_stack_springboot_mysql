@@ -17,6 +17,6 @@
     <div><p><b>TASK</b>: {{selectedTodo.task}}</p></div>
     <div><p><b>DUE DATE</b>: {{selectedTodo.due}}</p></div>
     <div><p><b>DONE</b>: {{selectedTodo.isdone?"YES":"NO"}}</p></div>
-    <div><a [ngClass]="['btn btn-warning']" href="/todo/{{selectedTodo.id}}">Details</a></div>
+    <div *ngIf="authEdit"><a [ngClass]="['btn btn-warning']" href="/todo/{{selectedTodo.id}}">Details</a></div>
   </div>
 </div>
