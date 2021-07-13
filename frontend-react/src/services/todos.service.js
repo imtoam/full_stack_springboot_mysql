@@ -2,23 +2,23 @@ import http from "../http-common";
 
 class ToDoDataService {
     getAll() {
-      return http.get("/todos");
+      return http.get("/todos/all");
     }
   
     get(id) {
-      return http.get(`/todo/${id}`);
+      return http.get(`/todos/${id}`);
     }
   
     create(data) {
-      return http.post("/add", data);
+      return http.post("/todos/add", data);
     }
   
     update(id, data) {
-      return http.put(`/todo/${id}`, data);
+      return http.put(`/todos/${id}`, data);
     }
   
     delete(id) {
-      return http.delete(`/todo/${id}`);
+      return http.delete(`/todos/${id}`);
     }
 }
   

@@ -19,6 +19,7 @@ class ToDoDetails extends Component {
       message: "",
       task_err: '',
       due_err: '',
+      authEdit: TokenStorageService.getUser().roles.includes("ROLE_EDIT"),
     };
   }
 
@@ -146,7 +147,8 @@ class ToDoDetails extends Component {
     var due_err_info = this.state.due_err?
         (<div><p className="err_info">{this.state.due_err}</p></div>)
         :(<div></div>);
-    return (
+    return this.state.authEdit?
+      (
         <div>
           <h2>ToDo Details</h2>
           <hr/>
@@ -215,6 +217,9 @@ class ToDoDetails extends Component {
             </div>
           )}
         </div>
+      ):
+      (
+        <h5>You are not authorized to perform this operation.</h5>
       );
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createTodo, retrieveByIdTodo } from "../actions/todos";
+import { TokenStorageService } from "../services/token-storage.service";
 
 class AddToDo extends Component {
     constructor(props) {
@@ -20,11 +21,11 @@ class AddToDo extends Component {
         submitted: false,
         task_err: '',
         due_err: '',
+        authEdit: TokenStorageService.getUser().roles.includes("ROLE_CREATE"),
       };
     }
   
     onChangeTask(e) {
-      
       if(e.target.value==null){
         this.setState({task_err: 'Task must not be empty', });
       }else{
@@ -136,7 +137,8 @@ class AddToDo extends Component {
       var due_err_info = this.state.due_err?
                             (<div><p className="err_info">{this.state.due_err}</p></div>)
                             :(<div></div>);
-      return (
+      return this.state.authEdit?
+        (
           <div className="submit-form">
             <h2>Add ToDo</h2>
             <hr/>
@@ -194,6 +196,9 @@ class AddToDo extends Component {
               </div>
             )}
           </div>
+        ):
+        (
+          <h5>You are not authorized to perform this operation.</h5>
         );
     }
   }

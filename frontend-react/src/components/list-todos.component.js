@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { retrieveTodos } from "../actions/todos";
+import { TokenStorageService } from "../services/token-storage.service";
 
 class ListTodos extends Component {
   constructor(props) {
@@ -37,6 +38,9 @@ class ListTodos extends Component {
   render() {
     const { currentTodo, currentIndex } = this.state;
     const { todos } = this.props;
+
+    var detailButton = (TokenStorageService.getUser().roles.includes("ROLE_EDIT"))?
+          (<Link to={"/todo/" + currentTodo.id} className="btn btn-warning">Details</Link>):(<div></div>);
 
     return (
         <div className="list row">
@@ -81,12 +85,7 @@ class ListTodos extends Component {
                   {currentTodo.isdone?"YES":"NO"}
                 </div>
   
-                <Link
-                  to={"/todo/" + currentTodo.id}
-                  className="btn btn-warning"
-                >
-                  Details
-                </Link>
+                {detailButton}
               </div>
             ) : (
               <div>
