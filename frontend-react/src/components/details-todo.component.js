@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateTodo, deleteTodo } from "../actions/todos";
 import TodoDataService from "../services/todos.service";
+import TokenStorageService from "../services/token-storage.service";
 
 class ToDoDetails extends Component {
   constructor(props) {

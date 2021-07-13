@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { retrieveTodos } from "../actions/todos";
-import { TokenStorageService } from "../services/token-storage.service";
+import TokenStorageService from "../services/token-storage.service";
 
 class ListTodos extends Component {
   constructor(props) {

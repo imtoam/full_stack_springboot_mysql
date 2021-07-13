@@ -7,7 +7,7 @@ export default axios.create({
             {
               "Content-type": "application/json",
               "Access-Control-Allow-Origin": "*",
-              "Authorization": "Bearer " + token // 'x-access-token': toekn
+              "Authorization": "Bearer " + TokenStorageService.getToken() // 'x-access-token': toekn
             } : 
             {
               "Content-type": "application/json",

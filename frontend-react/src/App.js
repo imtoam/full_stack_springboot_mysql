@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import './App.css';
 
@@ -7,6 +7,10 @@ import TokenStorageService from "./services/token-storage.service";
 import AddToDo from "./components/add-todo.component";
 import ToDoDetails from "./components/details-todo.component";
 import ListToDos from "./components/list-todos.component";
+import Login from "./components/login.component";
+import Register from "./components/register.component";
+import Profile from "./components/profile.component";
+import Admin from "./components/admin.component";
 
 class App extends Component {
   constructor(props) {
@@ -66,11 +70,11 @@ class App extends Component {
                       <div class="navbar-nav ml-auto">
                         <li class="nav-item">
                           <Link to={"/profile"} className="nav-link">
-                            {user.username}
+                            {this.state.currentUser.username}
                           </Link>
                         </li>
                         <li class="nav-item">
-                          <Link onClick={logOut} className="nav-link">
+                          <Link onClick={this.logOut} className="nav-link">
                             LogOut
                           </Link>
                         </li>

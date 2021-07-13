@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createTodo, retrieveByIdTodo } from "../actions/todos";
-import { TokenStorageService } from "../services/token-storage.service";
+import TokenStorageService from "../services/token-storage.service";
 
 class AddToDo extends Component {
     constructor(props) {
