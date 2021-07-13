@@ -39,7 +39,9 @@ class ListTodos extends Component {
     const { currentTodo, currentIndex } = this.state;
     const { todos } = this.props;
 
-    var detailButton = (TokenStorageService.getUser().roles.includes("ROLE_EDIT"))?
+    var detailButton = (!!TokenStorageService.getUser() 
+                            && !!TokenStorageService.getToken()
+                            && TokenStorageService.getUser().roles.includes("ROLE_EDIT"))?
           (<Link to={"/todo/" + currentTodo.id} className="btn btn-warning">Details</Link>):(<div></div>);
 
     return (

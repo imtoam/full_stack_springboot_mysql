@@ -20,7 +20,9 @@ class ToDoDetails extends Component {
       message: "",
       task_err: '',
       due_err: '',
-      authEdit: TokenStorageService.getUser().roles.includes("ROLE_EDIT"),
+      authEdit: (!!TokenStorageService.getUser() 
+                  && !!TokenStorageService.getToken()
+                  && TokenStorageService.getUser().roles.includes("ROLE_CREATE")),
     };
   }
 

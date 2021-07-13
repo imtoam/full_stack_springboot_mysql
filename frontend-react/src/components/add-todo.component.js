@@ -21,7 +21,9 @@ class AddToDo extends Component {
         submitted: false,
         task_err: '',
         due_err: '',
-        authEdit: TokenStorageService.getUser().roles.includes("ROLE_CREATE"),
+        authEdit: (!!TokenStorageService.getUser() 
+                    && !!TokenStorageService.getToken()
+                    && TokenStorageService.getUser().roles.includes("ROLE_CREATE")),
       };
     }
   
